@@ -178,6 +178,8 @@ class SmartRefresher extends StatefulWidget {
   /// child content builder
   final RefresherBuilder builder;
 
+ final bool enableOverScroll;
+
   /// creates a widget help attach the refresh and load more function
   /// controller must not be null,
   /// child is your refresh content,Note that there's a big difference between children inheriting from ScrollView or not.
@@ -198,7 +200,8 @@ class SmartRefresher extends StatefulWidget {
       this.onRefresh,
       this.onLoading,
       this.onTwoLevel,
-      this.onOffsetChange})
+      this.onOffsetChange,
+      this.enableOverScroll = false})
       : assert(controller != null),
         builder = null,
         super(key: key);
@@ -319,8 +322,9 @@ class _SmartRefresherState extends State<SmartRefresher> {
       widget.controller.scrollController = childView.controller ??
           (childView.primary ? PrimaryScrollController.of(context) : null);
       body = CustomScrollView(
-        physics: _getScrollPhysics(conf)
-            .applyTo(childView.physics ?? AlwaysScrollableScrollPhysics()),
+          physics: !widget.enableOverScroll ? ClampingScrollPhysics() : _getScrollPhysics(conf).applyTo(childView.physics),
+//         physics: _getScrollPhysics(conf)
+//             .applyTo(childView.physics ?? AlwaysScrollableScrollPhysics()),
         // ignore: DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE
         controller: childView.controller,
         cacheExtent: childView.cacheExtent,
