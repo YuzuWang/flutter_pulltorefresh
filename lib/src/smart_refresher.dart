@@ -223,7 +223,8 @@ class SmartRefresher extends StatefulWidget {
       this.onRefresh,
       this.onLoading,
       this.onTwoLevel,
-      this.onOffsetChange})
+      this.onOffsetChange,     
+       this.enableOverScroll = false})
       : assert(controller != null),
         header = null,
         footer = null,
